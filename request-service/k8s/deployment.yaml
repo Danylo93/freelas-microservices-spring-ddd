@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: request-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: request-service
+  template:
+    metadata:
+      labels:
+        app: request-service
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: "kubernetes.io/os"
+                    operator: In
+                    values:
+                      - linux
+      containers:
+        - name: request-service
+          image: freelas/request-service:latest
+          ports:
+            - containerPort: 8082
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "512Mi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8082
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8082
+            initialDelaySeconds: 10
+            periodSeconds: 5
