@@ -1,6 +1,6 @@
 replicaCount: 2
 image:
-  repository: freelas/client-service
+  repository: freelas/provider-service
   tag: latest
   pullPolicy: IfNotPresent
 service:
