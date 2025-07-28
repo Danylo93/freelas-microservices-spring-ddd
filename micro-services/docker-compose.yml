@@ -1,0 +1,210 @@
+version: '3.8'
+
+services:
+  # === Kafka Infrastructure ===
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.3.2
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: confluentinc/cp-kafka:7.3.2
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  # === PostgreSQL Databases ===
+  postgres-provider:
+    image: postgres:15
+    container_name: postgres-provider
+    environment:
+      POSTGRES_DB: providerdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5436:5432"
+    volumes:
+      - provider_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      retries: 5
+
+  postgres-request:
+    image: postgres:15
+    container_name: postgres-request
+    environment:
+      POSTGRES_DB: requestdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5434:5432"
+    volumes:
+      - request_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      retries: 5
+
+  postgres-client:
+    image: postgres:15
+    container_name: postgres-client
+    environment:
+      POSTGRES_DB: clientdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5435:5432"
+    volumes:
+      - client_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      retries: 5
+
+  postgres-billing:
+    image: postgres:15
+    container_name: postgres-billing
+    environment:
+      POSTGRES_DB: billingdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5437:5432"
+    volumes:
+      - billing_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      retries: 5
+
+  postgres-matching:
+    image: postgres:15
+    container_name: postgres-matching
+    environment:
+      POSTGRES_DB: matchingdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5438:5432"
+    volumes:
+      - matching_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      retries: 5
+
+  # === Microservices ===
+  provider-service:
+    build:
+      context: ./provider-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      postgres-provider:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-provider:5432/providerdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+
+  request-service:
+    build:
+      context: ./request-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      postgres-request:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-request:5432/requestdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+
+  client-service:
+    build:
+      context: ./client-service
+    ports:
+      - "8083:8085"
+    depends_on:
+      postgres-client:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-client:5432/clientdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+
+  billing-service:
+    build:
+      context: ./billing-service
+    ports:
+      - "8084:8086"
+    depends_on:
+      postgres-billing:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-billing:5432/billingdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+
+  notification-service:
+    build:
+      context: ./notification-service
+    ports:
+      - "8099:8084"
+    depends_on:
+      kafka:
+        condition: service_started
+
+  matching-service:
+    build:
+      context: ./matching-service
+    ports:
+      - "8086:8083"
+    depends_on:
+      postgres-matching:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-matching:5432/matchingdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+
+  gateway-service:
+    build:
+      context: ./gateway-service
+    ports:
+      - "8090:8080"
+    depends_on:
+      - provider-service
+      - request-service
+      - client-service
+      - billing-service
+      - notification-service
+      - matching-service
+
+volumes:
+  provider_data:
+  request_data:
+  client_data:
+  billing_data:
+  matching_data:

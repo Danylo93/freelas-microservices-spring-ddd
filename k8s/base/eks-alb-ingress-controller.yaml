@@ -1,0 +1,15 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: aws-load-balancer-controller
+  namespace: kube-system
+spec:
+  chart: aws-load-balancer-controller
+  repo: https://aws.github.io/eks-charts
+  valuesContent: |
+    clusterName: freelas-cluster
+    region: us-east-1
+    vpcId: vpc-xxxxxxx
+    serviceAccount:
+      create: false
+      name: aws-load-balancer-controller
