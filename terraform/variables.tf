@@ -1,16 +1,29 @@
-variable "aws_region" {
+variable "location" {
   type        = string
-  description = "AWS region"
-  default     = "us-east-1"
+  description = "Azure region"
+  default     = "eastus"
+}
+
+variable "resource_group_name" {
+  type        = string
+  description = "Resource group name"
+  default     = "freelas-rg"
 }
 
 variable "cluster_name" {
   type        = string
-  description = "EKS cluster name"
-  default     = "freelas-cluster"
+  description = "AKS cluster name"
+  default     = "freelas-aks"
 }
 
-variable "subnet_ids" {
-  type        = list(string)
-  description = "Subnet IDs for EKS"
+variable "dns_prefix" {
+  type        = string
+  description = "DNS prefix for AKS"
+  default     = "freelas"
+}
+
+variable "node_count" {
+  type        = number
+  description = "Number of nodes in the default pool"
+  default     = 2
 }
