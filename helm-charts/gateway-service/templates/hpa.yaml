@@ -1,12 +1,12 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "client-service.fullname" . }}
+  name: {{ include "gateway-service.fullname" . }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "client-service.fullname" . }}
+    name: {{ include "gateway-service.fullname" . }}
   minReplicas: 2
   maxReplicas: 5
   metrics:

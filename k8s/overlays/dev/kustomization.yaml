@@ -1,10 +1,37 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+
 resources:
   - ../../base
+
 namespace: freelas-dev
-namePrefix: dev-
-configMapGenerator:
-  - name: client-service-config
-    files:
-      - values-dev.yaml
+
+helmCharts:
+  - name: client-service
+    path: ../../helm-charts/client-service
+    releaseName: client-service
+    valuesFile: values-dev-client-service.yaml
+  - name: billing-service
+    path: ../../helm-charts/billing-service
+    releaseName: billing-service
+    valuesFile: values-dev-billing-service.yaml
+  - name: gateway-service
+    path: ../../helm-charts/gateway-service
+    releaseName: gateway-service
+    valuesFile: values-dev-gateway-service.yaml
+  - name: matching-service
+    path: ../../helm-charts/matching-service
+    releaseName: matching-service
+    valuesFile: values-dev-matching-service.yaml
+  - name: notification-service
+    path: ../../helm-charts/notification-service
+    releaseName: notification-service
+    valuesFile: values-dev-notification-service.yaml
+  - name: provider-service
+    path: ../../helm-charts/provider-service
+    releaseName: provider-service
+    valuesFile: values-dev-provider-service.yaml
+  - name: request-service
+    path: ../../helm-charts/request-service
+    releaseName: request-service
+    valuesFile: values-dev-request-service.yaml

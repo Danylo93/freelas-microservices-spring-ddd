@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "client-service.fullname" . }}
+  name: {{ include "billing-service.fullname" . }}
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
@@ -14,6 +14,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: {{ include "client-service.fullname" . }}
+                name: {{ include "billing-service.fullname" . }}
                 port:
                   number: {{ .Values.service.port }}

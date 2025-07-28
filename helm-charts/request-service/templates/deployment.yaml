@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "client-service.fullname" . }}
+  name: {{ include "request-service.fullname" . }}
   labels:
-    {{- include "client-service.labels" . | nindent 4 }}
+    {{- include "request-service.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "client-service.selectorLabels" . | nindent 6 }}
+      {{- include "request-service.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "client-service.selectorLabels" . | nindent 8 }}
+        {{- include "request-service.selectorLabels" . | nindent 8 }}
     spec:
       containers:
-        - name: {{ include "client-service.name" . }}
+        - name: {{ include "request-service.name" . }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:

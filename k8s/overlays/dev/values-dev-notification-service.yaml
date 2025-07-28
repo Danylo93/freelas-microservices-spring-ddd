@@ -1,5 +1,5 @@
 image:
-  repository: freelas/client-service
+  repository: freelas/notification-service
   tag: dev-latest
 replicaCount: 2
 resources:
