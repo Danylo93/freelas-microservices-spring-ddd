@@ -3,12 +3,14 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://postgresql-service.freelas.svc.cluster.local:5432/provider
+    url: jdbc:postgresql://postgresql-service.freelas.svc.cluster.local:5432/clientdb
     username: admin
     password: admin
   jpa:
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate.default_schema: provider
     show-sql: true
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
