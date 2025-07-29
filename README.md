@@ -12,3 +12,24 @@ terraform -chdir=terraform validate
 
 ## CI/CD
 O workflow padrão em `.github/workflows/ci-cd.yml` executa build e testes de todos os microserviços e gera o plano do Terraform a cada `push` ou `pull_request` para a branch `main`.
+
+## Implantação com Helm e Kubernetes
+Após a criação do cluster, aplique os manifestos base e instale os charts de cada serviço:
+
+```bash
+# recursos de namespace e ingress controller
+kubectl apply -k k8s/base
+
+# instalar ou atualizar os serviços
+for svc in billing client gateway matching notification provider request; do
+  helm upgrade --install "${svc}-service" "./helm-charts/${svc}-service" \
+    --namespace freelas-dev \
+    --values "./k8s/overlays/dev/values-dev-${svc}-service.yaml"
+done
+```
+
+Ao final, confira os ingressos criados com:
+
+```bash
+kubectl get ingress -n freelas-dev
+```
