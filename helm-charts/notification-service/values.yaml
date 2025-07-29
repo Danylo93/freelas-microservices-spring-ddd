@@ -14,15 +14,3 @@ resources:
     cpu: 250m
     memory: 256Mi
 affinity: {}
-
-# Ingress configuration
-ingress:
-  enabled: false
-  className: ""
-  annotations: {}
-  hosts:
-    - host: notification.freelas.dev
-      paths:
-        - path: /
-          pathType: Prefix
-  tls: []
