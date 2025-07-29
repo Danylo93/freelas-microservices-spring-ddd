@@ -1,5 +1,5 @@
 image:
-  repository: freelas/notification-service
+  repository: dan1993/notification-service
   tag: dev-latest
 replicaCount: 2
 resources:
@@ -29,7 +29,8 @@ affinity:
     requiredDuringSchedulingIgnoredDuringExecution:
       nodeSelectorTerms:
         - matchExpressions:
-            - key: environment
+            - key: "agentpool"
               operator: In
               values:
-                - dev
+                - default
+

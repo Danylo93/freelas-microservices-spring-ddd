@@ -1,7 +1,7 @@
 replicaCount: 2
 image:
-  repository: freelas/matching-service
-  tag: latest
+  repository: dan1993/matching-service
+  tag: dev-latest
   pullPolicy: IfNotPresent
 service:
   type: ClusterIP

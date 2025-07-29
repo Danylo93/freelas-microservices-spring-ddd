@@ -1,6 +1,6 @@
 image:
-  repository: freelas/request-service
-  tag: dev-latest
+  repository: dan1993/request-service
+  tag: v1
 replicaCount: 2
 resources:
   requests:
@@ -29,7 +29,8 @@ affinity:
     requiredDuringSchedulingIgnoredDuringExecution:
       nodeSelectorTerms:
         - matchExpressions:
-            - key: environment
+            - key: "agentpool"
               operator: In
               values:
-                - dev
+                - default
+

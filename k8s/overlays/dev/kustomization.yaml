@@ -8,30 +8,30 @@ namespace: freelas-dev
 
 helmCharts:
   - name: client-service
-    path: ../../helm-charts/client-service
+    repo: file://../../helm-charts/client-service
     releaseName: client-service
     valuesFile: values-dev-client-service.yaml
   - name: billing-service
-    path: ../../helm-charts/billing-service
+    repo: file://../../helm-charts/billing-service
     releaseName: billing-service
     valuesFile: values-dev-billing-service.yaml
   - name: gateway-service
-    path: ../../helm-charts/gateway-service
+    repo: file://../../helm-charts/gateway-service
     releaseName: gateway-service
     valuesFile: values-dev-gateway-service.yaml
   - name: matching-service
-    path: ../../helm-charts/matching-service
+    repo: file://../../helm-charts/matching-service
     releaseName: matching-service
     valuesFile: values-dev-matching-service.yaml
   - name: notification-service
-    path: ../../helm-charts/notification-service
+    repo: file://../../helm-charts/notification-service
     releaseName: notification-service
     valuesFile: values-dev-notification-service.yaml
   - name: provider-service
-    path: ../../helm-charts/provider-service
+    repo: file://../../helm-charts/provider-service
     releaseName: provider-service
     valuesFile: values-dev-provider-service.yaml
   - name: request-service
-    path: ../../helm-charts/request-service
+    repo: file://../../helm-charts/request-service
     releaseName: request-service
     valuesFile: values-dev-request-service.yaml

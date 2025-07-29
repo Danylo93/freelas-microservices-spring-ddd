@@ -1,7 +1,7 @@
 replicaCount: 2
 image:
-  repository: freelas/billing-service
-  tag: latest
+  repository: dan1993/billing-service
+  tag: dev-latest
   pullPolicy: IfNotPresent
 service:
   type: ClusterIP

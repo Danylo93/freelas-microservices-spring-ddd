@@ -1,7 +1,7 @@
 replicaCount: 2
 image:
-  repository: freelas/provider-service
-  tag: latest
+  repository: dan1993/provider-service
+  tag: v1
   pullPolicy: IfNotPresent
 service:
   type: ClusterIP
@@ -14,3 +14,10 @@ resources:
     cpu: 250m
     memory: 256Mi
 affinity: {}
+env:
+  - name: SPRING_DATASOURCE_URL
+    value: jdbc:postgresql://postgresql-service:5432/client
+  - name: SPRING_DATASOURCE_USERNAME
+    value: admin
+  - name: SPRING_DATASOURCE_PASSWORD
+    value: admin

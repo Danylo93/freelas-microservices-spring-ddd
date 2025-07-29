@@ -1,6 +1,6 @@
 replicaCount: 2
 image:
-  repository: freelas/client-service
+  repository: dan1993/client-service
   tag: latest
   pullPolicy: IfNotPresent
 service:
@@ -14,3 +14,10 @@ resources:
     cpu: 250m
     memory: 256Mi
 affinity: {}
+env:
+  - name: SPRING_DATASOURCE_URL
+    value: jdbc:postgresql://postgresql-service:5432/client
+  - name: SPRING_DATASOURCE_USERNAME
+    value: admin
+  - name: SPRING_DATASOURCE_PASSWORD
+    value: admin

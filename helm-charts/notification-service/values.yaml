@@ -1,7 +1,7 @@
 replicaCount: 2
 image:
-  repository: freelas/notification-service
-  tag: latest
+  repository: dan1993/notification-service
+  tag: dev-latest
   pullPolicy: IfNotPresent
 service:
   type: ClusterIP
