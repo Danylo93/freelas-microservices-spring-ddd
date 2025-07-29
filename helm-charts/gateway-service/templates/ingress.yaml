@@ -3,10 +3,9 @@ kind: Ingress
 metadata:
   name: {{ include "gateway-service.fullname" . }}
   annotations:
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/target-type: ip
+    kubernetes.io/ingress.class: nginx
 spec:
-  ingressClassName: alb
+  ingressClassName: nginx
   rules:
     - http:
         paths:

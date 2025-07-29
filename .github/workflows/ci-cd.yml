@@ -16,15 +16,18 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+          cache: 'maven'
       - name: Build and test microservices
+        shell: bash
         run: |
           for dir in micro-services/*-service; do
-            mvn -f "$dir/pom.xml" -B test
+            mvn -f "$dir/pom.xml" -B -ntp test
           done
       - name: Package microservices
+        shell: bash
         run: |
           for dir in micro-services/*-service; do
-            mvn -f "$dir/pom.xml" -B package -DskipTests
+            mvn -f "$dir/pom.xml" -B -ntp package -DskipTests
           done
 
   terraform:
