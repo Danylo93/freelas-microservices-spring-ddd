@@ -21,3 +21,14 @@ env:
     value: admin
   - name: SPRING_DATASOURCE_PASSWORD
     value: admin
+# Ingress configuration
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: request.freelas.dev
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
