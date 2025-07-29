@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://postgresql-service.freelas.svc.cluster.local:5432/clientdb
-    username: admin
-    password: admin
+    url: jdbc:postgresql://postgresql-service.freelas.svc.cluster.local:5432/freelasdb
+    username: freelas
+    password: freelas123
   jpa:
     hibernate:
       ddl-auto: update

@@ -1,7 +1,7 @@
 replicaCount: 2
 image:
   repository: dan1993/client-service
-  tag: latest
+  tag: v2
   pullPolicy: IfNotPresent
 service:
   type: ClusterIP
@@ -16,13 +16,13 @@ resources:
 affinity: {}
 env:
   - name: SPRING_DATASOURCE_URL
-    value: jdbc:postgresql://postgresql-service:5432/clientdb
+    value: jdbc:postgresql://postgresql-0.freelas.svc.cluster.local:5432/freelasdb
   - name: SPRING_DATASOURCE_USERNAME
-    value: admin
+    value: freelas
   - name: SPRING_DATASOURCE_PASSWORD
-    value: admin
+    value: freelas123
   - name: SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA
-    value: client
+    value: freelasdb
 
 # Ingress configuration
 ingress:

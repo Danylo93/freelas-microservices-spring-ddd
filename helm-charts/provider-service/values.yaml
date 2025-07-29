@@ -16,7 +16,7 @@ resources:
 affinity: {}
 env:
   - name: SPRING_DATASOURCE_URL
-    value: jdbc:postgresql://postgresql-service:5432/clientdb
+    value: jdbc:postgresql://postgresql-service.freelas.svc.cluster.local:5432/providerdb
   - name: SPRING_DATASOURCE_USERNAME
     value: admin
   - name: SPRING_DATASOURCE_PASSWORD

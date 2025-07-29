@@ -1,0 +1,7 @@
+auth:
+  username: freelas
+  password: freelas123
+  database: freelasdb
+primary:
+  persistence:
+    enabled: false
