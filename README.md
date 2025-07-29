@@ -33,3 +33,35 @@ Ao final, confira os ingressos criados com:
 ```bash
 kubectl get ingress -n freelas-dev
 ```
+
+## Ambiente local com Docker Compose
+
+Para executar toda a stack em modo de desenvolvimento é fornecido um arquivo
+`docker-compose.yml` no diretório `micro-services`. Este compose cria uma
+instância do Kafka e um banco PostgreSQL dedicado para cada microserviço.
+
+Execute os serviços com:
+
+```bash
+cd micro-services
+docker compose up --build
+```
+
+Após o provisionamento os serviços podem ser acessados nas portas abaixo:
+
+| Serviço            | Porta |
+|--------------------|-------|
+| Gateway            | 8090  |
+| Provider           | 8081  |
+| Request            | 8082  |
+| Client             | 8083  |
+| Billing            | 8084  |
+| Notification       | 8099  |
+| Matching           | 8086  |
+
+O gateway já é configurado para se comunicar com os demais contêineres por meio
+dos nomes de serviço do Docker Compose. Caso queira alterar algum endereço,
+sobrescreva as variáveis de ambiente `PROVIDER_SERVICE_URL`,
+`REQUEST_SERVICE_URL`, `NOTIFICATION_SERVICE_URL`, `CLIENT_SERVICE_URL` ou
+`BILLING_SERVICE_URL` ao subir o `gateway-service`.
+
